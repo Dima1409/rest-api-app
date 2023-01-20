@@ -1,6 +1,6 @@
 const fs = require("fs").promises;
 const path = require("path");
-const {v4} = require('uuid');
+const { v4 } = require("uuid");
 
 const contactsPath = path.join(__dirname, "contacts.json");
 
@@ -34,21 +34,22 @@ async function removeContact(contactId) {
   return removeContact;
 }
 
-async function addContact(name, email, phone) {
+async function addContact({ name, email, phone }) {
   const data = await listContacts();
-  const newContact = {name, email, phone, id: v4()};
+  const newContact = { id: v4(), name, email, phone };
+  console.log(newContact);
   data.push(newContact);
   await updateContacts(data);
   return newContact;
 }
 
-async function updateById(id, name, email, phone) {
+async function updateById(id, { name, email, phone }) {
   const data = await listContacts();
-  const idx = data.findIndex(elem=>elem.id === id);
-  if(idx === -1) {
+  const idx = data.findIndex((elem) => elem.id === id);
+  if (idx === -1) {
     return null;
   }
-  data[idx] = {id, name, email, phone};
+  data[idx] = { id, name, email, phone };
   await updateContacts(data);
   return data[idx];
 }
@@ -57,7 +58,6 @@ module.exports = {
   listContacts,
   getContactById,
   removeContact,
-  addContact, 
-  updateById
-}
-
+  addContact,
+  updateById,
+};
