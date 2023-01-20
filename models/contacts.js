@@ -43,7 +43,7 @@ async function addContact({ name, email, phone }) {
   return newContact;
 }
 
-async function updateById(id, { name, email, phone }) {
+async function updateById(id,{ name, email, phone }) {
   const data = await listContacts();
   const idx = data.findIndex((elem) => elem.id === id);
   if (idx === -1) {
@@ -53,6 +53,17 @@ async function updateById(id, { name, email, phone }) {
   await updateContacts(data);
   return data[idx];
 }
+
+// async function updateById(id, data) {
+//   const contacts = await listContacts();
+//   const idx = contacts.findIndex((elem) => elem.id === id);
+//   if (idx === -1) {
+//     return null;
+//   }
+//   contacts[idx] = { id, name, email, phone };
+//   await updateContacts(contacts);
+//   return contacts[idx];
+// }
 
 module.exports = {
   listContacts,

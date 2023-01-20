@@ -15,14 +15,8 @@ router.delete("/:contactId", ctrlWrapper(contacts.remove));
 
 router.put(
   "/:contactId",
-  validation(contactSchema),
-  ctrlWrapper(contacts.update)
-);
-
-router.patch(
-  "/:contactId",
   validation(contactSchemaUpdate),
-  ctrlWrapper(contacts.patch)
+  ctrlWrapper(contacts.update)
 );
 
 module.exports = router;
