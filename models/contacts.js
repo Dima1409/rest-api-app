@@ -52,18 +52,7 @@ async function updateById(id,{ name, email, phone }) {
   data[idx] = { id, name, email, phone };
   await updateContacts(data);
   return data[idx];
-}
-
-// async function updateById(id, data) {
-//   const contacts = await listContacts();
-//   const idx = contacts.findIndex((elem) => elem.id === id);
-//   if (idx === -1) {
-//     return null;
-//   }
-//   contacts[idx] = { id, name, email, phone };
-//   await updateContacts(contacts);
-//   return contacts[idx];
-// }
+};
 
 module.exports = {
   listContacts,
