@@ -37,22 +37,25 @@ async function removeContact(contactId) {
 async function addContact({ name, email, phone }) {
   const data = await listContacts();
   const newContact = { id: v4(), name, email, phone };
-  console.log(newContact);
   data.push(newContact);
   await updateContacts(data);
   return newContact;
 }
 
-async function updateById(id,{ name, email, phone }) {
-  const data = await listContacts();
-  const idx = data.findIndex((elem) => elem.id === id);
+async function updateById(id, data) {
+  const contacts = await listContacts();
+  const idx = contacts.findIndex((elem) => elem.id === id);
   if (idx === -1) {
     return null;
   }
-  data[idx] = { id, name, email, phone };
-  await updateContacts(data);
-  return data[idx];
-};
+  const item = await getContactById(id);
+  contacts[idx] = {
+    ...item,
+    ...data,
+  };
+  await updateContacts(contacts);
+  return contacts[idx];
+}
 
 module.exports = {
   listContacts,
