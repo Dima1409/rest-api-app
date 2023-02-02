@@ -6,7 +6,7 @@ const update = async (req, res) => {
   const { contactId } = req.params;
   const { _id } = req.user;
   const findById = await Contact.findById(contactId);
-  isOwner(_id, findById.owner);
+  await isOwner(_id, findById.owner);
   const result = await Contact.findByIdAndUpdate(contactId, req.body, {
     new: true,
   });

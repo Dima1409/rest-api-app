@@ -7,7 +7,7 @@ const updateFavorite = async (req, res) => {
   const { favorite } = req.body;
   const { _id } = req.user;
   const findById = await Contact.findById(contactId);
-  isOwner(_id, findById.owner);
+  await isOwner(_id, findById.owner);
   const result = await Contact.findByIdAndUpdate(
     contactId,
     { favorite },

@@ -45,10 +45,15 @@ const joiLogin = Joi.object({
   password: Joi.string().min(8).required(),
 });
 
+const userUpdate = Joi.object({
+  subscription: Joi.string().valid("starter", "pro", "business")
+})
+
 const User = model("user", userSchema);
 
 module.exports = {
   User,
   joiRegister,
   joiLogin,
+  userUpdate
 };
