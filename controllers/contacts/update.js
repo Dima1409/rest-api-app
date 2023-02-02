@@ -1,9 +1,15 @@
-const {Contact} = require("../../models");
+const { Contact } = require("../../models");
 const { NotFound } = require("http-errors");
+const { isOwner } = require("../../middlewares");
 
 const update = async (req, res) => {
   const { contactId } = req.params;
-  const result = await Contact.findByIdAndUpdate(contactId, req.body, {new: true});
+  const { _id } = req.user;
+  const findById = await Contact.findById(contactId);
+  isOwner(_id, findById.owner);
+  const result = await Contact.findByIdAndUpdate(contactId, req.body, {
+    new: true,
+  });
   if (!result) {
     throw new NotFound(`Contact with id=${contactId} not found`);
   }
