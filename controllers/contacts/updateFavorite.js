@@ -15,6 +15,7 @@ const updateFavorite = async (req, res) => {
       new: true,
     }
   );
+  console.log(result);
   if (!result) {
     throw new NotFound(`Contact with id=${contactId} not found`);
   }
