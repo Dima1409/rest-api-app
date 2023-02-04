@@ -1,12 +1,10 @@
 const { Contact } = require("../../models");
 const { NotFound } = require("http-errors");
-const { isOwner } = require("../../middlewares");
 
 const getById = async (req, res) => {
   const { contactId } = req.params;
   const { _id } = req.user;
-  const result = await Contact.findById(contactId);
-  await isOwner(_id, result.owner);
+  const result = await Contact.findOne({ _id: contactId, owner: _id });
   if (!result) {
     throw new NotFound(`Contact with id=${contactId} not found`);
   }

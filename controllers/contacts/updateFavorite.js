@@ -1,15 +1,12 @@
 const { Contact } = require("../../models");
 const { NotFound } = require("http-errors");
-const { isOwner } = require("../../middlewares");
 
 const updateFavorite = async (req, res) => {
   const { contactId } = req.params;
   const { favorite } = req.body;
   const { _id } = req.user;
-  const findById = await Contact.findById(contactId);
-  await isOwner(_id, findById.owner);
-  const result = await Contact.findByIdAndUpdate(
-    contactId,
+  const result = await Contact.findOneAndUpdate(
+    { _id: contactId, owner: _id },
     { favorite },
     {
       new: true,
