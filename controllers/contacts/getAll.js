@@ -1,40 +1,15 @@
 const { Contact } = require("../../models");
 
 const getAllContacts = async (userId, query) => {
-  const { page = 1, limit = 20, favorite, name } = query;
+  const { page = 1, limit = 20, favorite = false, name = "" } = query;
   const skip = (page - 1) * limit;
   const pagination = {
     skip,
     limit: Number(limit),
   };
+  const filter = { owner: userId, favorite: favorite, name: { $regex: name } };
   const ownerInfo = "_id email";
-  if (favorite && !name) {
-    return Contact.find({ owner: userId, favorite: favorite }, "", pagination)
-      .populate("owner", ownerInfo)
-      .sort({ name: 1 });
-  }
-
-  if (name && !favorite) {
-    return Contact.find(
-      { owner: userId, name: { $regex: name } },
-      "",
-      pagination
-    )
-      .populate("owner", ownerInfo)
-      .sort({ name: 1 });
-  }
-
-  if (favorite && name) {
-    return Contact.find(
-      { owner: userId, favorite: favorite, name: { $regex: name } },
-      "",
-      pagination
-    )
-      .populate("owner", ownerInfo)
-      .sort({ name: 1 });
-  }
-
-  return Contact.find({ owner: userId }, "", pagination)
+  return Contact.find(filter, "", pagination)
     .populate("owner", ownerInfo)
     .sort({ name: 1 });
 };
