@@ -4,9 +4,15 @@ const { NotFound } = require("http-errors");
 const updateFavorite = async (req, res) => {
   const { contactId } = req.params;
   const { favorite } = req.body;
-  const result = await Contact.findByIdAndUpdate(contactId, {favorite}, {
-    new: true,
-  });
+  const { _id } = req.user;
+  const result = await Contact.findOneAndUpdate(
+    { _id: contactId, owner: _id },
+    { favorite },
+    {
+      new: true,
+    }
+  );
+  console.log(result);
   if (!result) {
     throw new NotFound(`Contact with id=${contactId} not found`);
   }
