@@ -25,18 +25,31 @@ describe("auth", () => {
   beforeAll(async () => {
     mongoose.set("strictQuery", false);
     await mongoose.connect(DB_HOST);
-  });
-  afterAll(async () => {
-    await User.deleteMany({ _id: id });
-    await mongoose.disconnect();
-  });
-  beforeEach(async () => {
-    await User.deleteMany({ _id: id });
     const newUser = new User(mUser);
     await newUser.save();
   });
+  afterAll(async () => {
+    await User.deleteMany();
+    await mongoose.disconnect();
+  });
 
   describe("signUp test", () => {
+    const userEmail = "testNewUser@mail.com";
+      const userPassword ="11223344";
+      const userName = "NewName";
+    it("register new user, statusCode 201", async () => {
+      
+      const response = await supertest(app).post("/api/auth/register").send({
+       name: userName,
+       password: userPassword,
+       email:userEmail
+      })
+      const { email, subscription } = response.body.data.user;
+    
+      expect(response.statusCode).toBe(201);
+      expect(email).toBe(userEmail);
+      expect(subscription).toBe("starter");
+    });
     it("if email already in use", async () => {
       const response = await supertest(app).post("/api/auth/register").send({
         name: mUser.name,
