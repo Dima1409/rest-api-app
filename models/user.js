@@ -18,7 +18,13 @@ const userSchema = Schema(
       enum: ["starter", "pro", "business"],
       default: "starter",
     },
-    token: String,
+    token: {
+      type: String,
+      default: false,
+    },
+    avatarURL: {
+      type: String,
+    }
   },
   {
     versionKey: false,
@@ -46,8 +52,8 @@ const joiLogin = Joi.object({
 });
 
 const userUpdate = Joi.object({
-  subscription: Joi.string().valid("starter", "pro", "business")
-})
+  subscription: Joi.string().valid("starter", "pro", "business"),
+});
 
 const User = model("user", userSchema);
 
@@ -55,5 +61,5 @@ module.exports = {
   User,
   joiRegister,
   joiLogin,
-  userUpdate
+  userUpdate,
 };
