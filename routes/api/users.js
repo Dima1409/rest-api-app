@@ -12,7 +12,7 @@ const { userUpdate } = require("../../models/user");
 const router = express.Router();
 
 router.get("/current", authorization, ctrlWrapper(users.getCurrent));
-
+router.get("/verify/:verificationToken", ctrlWrapper(users.verificationUser));
 router.patch(
   "/avatars",
   authorization,
